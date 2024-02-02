@@ -57,7 +57,7 @@ export default function Signup()  {
   const handleSignup = async (values) => {
     try {
       setLoading(true);
-      const response = await AxiosService.post("http://localhost:8000/user/signup", values);
+      const response = await AxiosService.post("https://password-reset-y8xp.onrender.com/user/signup", values);
       const { message } = response.data;
       console.log(message);
       toast.success(message, {

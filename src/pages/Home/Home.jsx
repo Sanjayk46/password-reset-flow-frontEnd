@@ -14,7 +14,7 @@ export default function Home(){
       sessionStorage.removeItem("userData");
       navigate("/signin");
       toast.success("Logout successful", {
-        position: "toast.POSITION.TOP_CENTER",
+        position: "top-center",
       });
     };
     return(

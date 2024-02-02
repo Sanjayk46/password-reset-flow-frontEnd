@@ -57,7 +57,7 @@ export default function ResetPassword (){
         return;
       }
 
-      const response = await AxiosService.post("http://localhost:8000/user/reset-password", values);
+      const response = await AxiosService.post("https://password-reset-y8xp.onrender.com/user/reset-password", values);
       console.log(response.data);
 
       if (response.data.message) {

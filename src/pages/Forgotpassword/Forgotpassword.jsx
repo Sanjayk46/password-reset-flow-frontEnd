@@ -56,7 +56,7 @@ export default function ForgotPassword(){
     try {
       setLoading(true);
   
-      const response = await AxiosService.post("http://localhost:8000/user/forgot-password", {
+      const response = await AxiosService.post("https://password-reset-y8xp.onrender.com/user/forgot-password", {
         email,
       });
   
@@ -65,7 +65,7 @@ export default function ForgotPassword(){
   
         if (response.data.message) {
           toast.success(response.data.message, {
-            position: "toast.POSITION.TOP_CENTER",
+            position: "top-center",
           });
         }
   
