@@ -9,7 +9,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 // import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import 'react-toastify/dist/ReactToastify.css';
-import AxiosService from "../../Api/Apiservice";
+import AxiosService from '../Api/Apiservice';
 
 export default function ForgotPassword(){
   const navigate = useNavigate();

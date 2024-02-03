@@ -1,8 +1,11 @@
-
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import AxiosService from '../Api/Apiservice';
+import { Link } from "react-router-dom";
+import { toast ,ToastContainer} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import { Formik, Field, Form, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import { useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
@@ -12,23 +15,37 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import CircularProgress from "@mui/material/CircularProgress";
-import 'react-toastify/dist/ReactToastify.css';
-import 'react-toastify/dist/ReactToastify.css';
-import * as Yup from 'yup';
-import AxiosService from "../../Api/Apiservice";
 
-export default function Signin(){
+// const darkTheme = createTheme({
+//   palette: {
+//     mode: "dark",
+//     primary: {
+//       main: "#90caf9",
+//     },
+//     secondary: {
+//       main: "#f48fb1",
+//     },
+//     error: {
+//       main: "#f44336",
+//     },
+//   },
+// });
+
+export default function Signup()  {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
-
   const initialValues = {
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
   };
 
   const validationSchema = Yup.object({
+    firstName: Yup.string().required("FirstName Required"),
+    lastName: Yup.string().required("LastName Required"),
     email: Yup.string()
       .email("Invalid email address")
       .required("Email Required"),
@@ -37,97 +54,35 @@ export default function Signin(){
       .matches(/^(?=.*[a-zA-Z])(?=.*\d).{12,}$/, "Make Strong password"),
   });
 
-  // const handleSignin = async (values) => {
-  //   try {
-  //     setLoading(true);
-  //     const response = await AxiosService.post("http://localhost:8000/user/signin", values);
-  //     console.log(response.data);
-
-  //     const { message, token, userData } = response.data;
-
-  //     if (message) {
-  //       // toast.success(message, {
-  //       //   position: toast.POSITION.TOP_CENTER,
-  //       // });
-  //       toast.success(message, {
-  //         position: toast.POSITION.TOP_CENTER,
-  //       });
-  //       sessionStorage.setItem("token", token);
-  //       sessionStorage.setItem("userData", JSON.stringify(userData));
-  //       navigate("/home");
-  //     }
-  //   } catch (error) {
-  //     console.error(error.response.data);
-
-  //     if (error.response) {
-  //       if (error.response.status === 401) {
-  //         toast.error(error.response.data.message, {
-  //           position: toast.POSITION.TOP_CENTER,
-  //         });
-  //       } else if (error.response.status === 404) {
-  //         toast.error(error.response.data.message,{
-  //           position: toast.POSITION.TOP_CENTER,
-  //         });
-  //       } else {
-  //         toast.error("Failed to sign in. Please try again.", {
-  //           position: toast.POSITION.TOP_CENTER,
-  //         });
-  //       }
-  //     }
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-  const handleSignin = async (values) => {
+  const handleSignup = async (values) => {
     try {
       setLoading(true);
-      const response = await AxiosService.post("https://password-reset-y8xp.onrender.com/user/signin", values);
-  
-      if (response && response.data) {
-        const { message, token, userData } = response.data;
-  
-        if (message) {
-          toast.success(message, {
-            position: 'top-center',
-          });
-          sessionStorage.setItem("token", token);
-          sessionStorage.setItem("userData", JSON.stringify(userData));
-          navigate("/");
-        }
-      } else {
-        // Handle the case where the response or its data is undefined
-        console.error("Invalid response format:", response);
-      }
+      const response = await AxiosService.post("https://password-reset-y8xp.onrender.com/user/signup", values);
+      const { message } = response.data;
+      console.log(message);
+      toast.success(message, {
+        position: 'top-center',
+      });
+      navigate("/signin");
     } catch (error) {
-      console.error(error.response?.data);
-  
-      if (error.response) {
-        if (error.response.status === 401) {
-          toast.error(error.response.data.message, {
-            position: 'top-center',
-          });
-        } else if (error.response.status === 404) {
-          toast.error(error.response.data.message, {
-            position: 'top-center',
-          });
-        } else {
-          toast.error("Failed to sign in. Please try again.", {
-            position: 'top-center',
-          });
-        }
-      }
+      console.error(error.response.data);
+      const errorMessage =
+        error.response.data.message || "Registration failed. Please try again.";
+      toast.error(errorMessage, {
+        position: 'top-center',
+      });
     } finally {
       setLoading(false);
     }
   };
-  
+
   return (
     <>
       <CssBaseline />
       <Formik
         initialValues={initialValues}
-        onSubmit={handleSignin}
         validationSchema={validationSchema}
+        onSubmit={handleSignup}
       >
         <Form>
           <Box
@@ -144,13 +99,43 @@ export default function Signin(){
                 marginBottom: "20px",
               },
               "& .required": {
-                color: 'red',
+                color: "black",
               },
             }}
             noValidate
             autoComplete='off'
           >
-            <h2 style={{ marginBottom: "20px" }}>Signin</h2>
+            <h2 style={{ marginBottom: "20px" }}>Signup</h2>
+            <div>
+              <Field
+                name='firstName'
+                type='text'
+                as={TextField}
+                label='First Name'
+                variant='outlined'
+                className='required'
+              />
+              <ErrorMessage
+                name='firstName'
+                component='div'
+                className='required'
+              />
+            </div>
+            <div>
+              <Field
+                name='lastName'
+                type='text'
+                as={TextField}
+                label='Last Name'
+                variant='outlined'
+                className='required'
+              />
+              <ErrorMessage
+                name='lastName'
+                component='div'
+                className='required'
+              />
+            </div>
             <div>
               <Field
                 name='email'
@@ -169,6 +154,7 @@ export default function Signin(){
                 as={TextField}
                 label='Password'
                 variant='outlined'
+                className='required'
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position='end'>
@@ -181,7 +167,6 @@ export default function Signin(){
                     </InputAdornment>
                   ),
                 }}
-                className='required'
               />
               <ErrorMessage
                 name='password'
@@ -196,21 +181,17 @@ export default function Signin(){
               style={{ marginTop: "20px" }}
               disabled={loading}
             >
-              {loading ? <CircularProgress size={24} /> : "Signin"}
+              {loading ? <CircularProgress size={24} /> : "Signup"}
             </Button>
             <p style={{ marginTop: "20px" }}>
-              <Link to='/forgot-password'>Forgot Password?</Link>
+              Already have an account? <Link to='/signin'>Signin</Link>
             </p>
-            <p>
-              Don't have an account? <Link to='/signup'>Signup</Link>
-            </p>
+            <ToastContainer/>
           </Box>
-          <ToastContainer/>
         </Form>
       </Formik>
-    </>
+   </>
   );
 };
 
-// San@804512311
-// sanjayks291199@gmail.com
+

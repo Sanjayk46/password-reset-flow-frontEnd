@@ -1,10 +1,10 @@
 import React from "react";
 import{Navigate, Route,Routes} from 'react-router-dom';
-import Home from '../pages/Home/Home';
-import Signin from '../pages/Siginin/Signin';
-import Signup from '../pages/Signup/Signup';
-import Forgotpassword from '../pages/Forgotpassword/Forgotpassword';
-import Resetpassword from '../pages/Resetpassword/Resetpassword';
+import Home from '../pages/Home';
+import Signin from '../pages/Signin';
+import Signup from '../pages/Signup';
+import Forgotpassword from '../pages/Forgotpassword';
+import Resetpassword from '../pages/Resetpassword';
 
 export default function AppRouters(){
     return(
