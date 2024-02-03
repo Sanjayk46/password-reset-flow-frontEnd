@@ -99,7 +99,7 @@ export default function Signup()  {
                 marginBottom: "20px",
               },
               "& .required": {
-                color: "black",
+                color: "red",
               },
             }}
             noValidate
