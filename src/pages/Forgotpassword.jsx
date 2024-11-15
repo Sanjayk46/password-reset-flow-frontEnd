@@ -55,7 +55,7 @@ export default function ForgotPassword(){
   const handleForgotPassword = async () => {
     try {
       setLoading(true);
-  
+      console.log("Email Entered is Correct",email);
       const response = await AxiosService.post("https://password-reset-y8xp.onrender.com/user/forgot-password", {
         email,
       });
